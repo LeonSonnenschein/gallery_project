@@ -2,6 +2,7 @@
 #include <string>
 #include "MemoryAccess.h"
 #include "AlbumManager.h"
+#include <ctime>
 
 
 int getCommandNumberFromUser()
@@ -28,6 +29,13 @@ int getCommandNumberFromUser()
 	return std::atoi(input.c_str());
 }
 
+void printNameDate()
+{
+	time_t my_time = time(NULL);
+
+	std::cout << "Made by: leon sonnenschein\n===================\nDate and time: " << ctime(&my_time) << "===================\n" << std::endl;
+}
+
 int main(void)
 {
 	// initialization data access
@@ -40,6 +48,7 @@ int main(void)
 	std::string albumName;
 	std::cout << "Welcome to Gallery!" << std::endl;
 	std::cout << "===================" << std::endl;
+	printNameDate();
 	std::cout << "Type " << HELP << " to a list of all supported commands" << std::endl;
 	
 	do {
