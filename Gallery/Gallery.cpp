@@ -49,6 +49,7 @@ int main(void)
 	std::cout << "Welcome to Gallery!" << std::endl;
 	std::cout << "===================" << std::endl;
 	printNameDate();
+	std::cout << "adding something to main because I forgot a step..." << std::endl;
 	std::cout << "Type " << HELP << " to a list of all supported commands" << std::endl;
 	
 	do {
