@@ -122,7 +122,6 @@ void Album::removePicture(const std::string& pictureName)
 	throw ItemNotFoundException("Picture", pictureName);
 }
 
-
 bool Album::doesPictureExists(const std::string& name) const
 {
 	//If it does not point to end, it means element exists in list
