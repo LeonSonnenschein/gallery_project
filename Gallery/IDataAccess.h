@@ -2,6 +2,12 @@
 #include <list>
 #include "Album.h"
 #include "User.h"
+#include "sqlite3.h"
+#include  <io.h>
+
+using std::string;
+using std::cout;
+using std::endl;
 
 class IDataAccess
 {
