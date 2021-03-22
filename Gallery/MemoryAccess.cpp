@@ -14,7 +14,7 @@ void MemoryAccess::printAlbums()
 	std::cout << "Album list:" << std::endl;
 	std::cout << "-----------" << std::endl;
 	for (const Album& album: m_albums) 	{
-		std::cout << std::setw(5) << "* " << album;
+		std::cout << std::setw(5) << "* " << album;// << std::endl;
 	}
 }
 
@@ -183,6 +183,21 @@ void MemoryAccess::deleteUser(const User& user)
 {
 	if (doesUserExists(user.getId())) {
 	
+		for (auto &album : this->getAlbumsOfUser(user))
+		{
+			this->deleteAlbum(album.getName(), user.getId());
+		}
+		for (auto album : this->m_albums)
+		{
+			for (auto picture : album.getPictures())
+			{
+				if (picture.isUserTagged(user))
+				{
+					picture.untagUser(user);
+				}
+			}
+		}
+		
 		for (auto iter = m_users.begin(); iter != m_users.end(); ++iter) {
 			if (*iter == user) {
 				iter = m_users.erase(iter);

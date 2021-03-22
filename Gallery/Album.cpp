@@ -122,7 +122,6 @@ void Album::removePicture(const std::string& pictureName)
 	throw ItemNotFoundException("Picture", pictureName);
 }
 
-
 bool Album::doesPictureExists(const std::string& name) const
 {
 	//If it does not point to end, it means element exists in list
@@ -144,7 +143,7 @@ bool Album::operator==(const Album& other) const
 std::ostream& operator<<(std::ostream& strOut, const Album& album)
 {
 	strOut << "[" << album.m_name << "] - created by user@"
-		<< const_cast<Album&>(album).getOwnerId() << std::endl;
+		<< const_cast<Album&>(album).getOwnerId() << " - creation date: " << album.getCreationDate() << std::endl;
 	
 	return strOut;
 }
