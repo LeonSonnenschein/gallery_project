@@ -39,10 +39,9 @@ void printNameDate()
 
 int main(void)
 {
-	// creating new database
-	DataAccessTest test;
-	test.createGalleryDB();
-	return 0;
+	//// creating new database
+	//DataAccessTest test;
+	//test.createGalleryDB();
 
 
 	// initialization data access
