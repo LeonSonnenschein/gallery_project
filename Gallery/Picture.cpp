@@ -112,6 +112,12 @@ bool Picture::operator==(const Picture& other) const
 	return m_pictureId == other.getId();
 }
 
+void Picture::setTagedUsers(std::set<int> usersTags)
+{
+	this->m_usersTags.clear();
+	this->m_usersTags = usersTags;
+}
+
 std::ostream& operator<<(std::ostream& strOut, const Picture& pic) {
 	strOut << "Picture@" << pic.m_pictureId << ": ["
 		<< pic.m_name << ", " << pic.m_creationDate << ", " << pic.m_pathOnDisk <<

@@ -148,6 +148,12 @@ int Album::getID()
 	return this->_id;
 }
 
+void Album::setPictureList(std::list<Picture> picture_list)
+{
+	this->m_pictures.clear();
+	this->m_pictures = picture_list;
+}
+
 
 
 std::ostream& operator<<(std::ostream& strOut, const Album& album)
