@@ -4,6 +4,7 @@
 #include "AlbumManager.h"
 #include <ctime>
 #include "DatabaseAccess.h"
+#include "DataAccessTest.h"
 
 int getCommandNumberFromUser()
 {
@@ -38,6 +39,12 @@ void printNameDate()
 
 int main(void)
 {
+	// creating new database
+	DataAccessTest test;
+	test.createGalleryDB();
+	return 0;
+
+
 	// initialization data access
 	DatabaseAccess dataAccess;
 
