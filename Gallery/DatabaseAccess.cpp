@@ -47,6 +47,10 @@ void DatabaseAccess::close()
 
 void DatabaseAccess::clear()
 {
+	this->sendCommandToDB("DELETE FROM tags;");
+	this->sendCommandToDB("DELETE FROM albums;");
+	this->sendCommandToDB("DELETE FROM pictures;");
+	this->sendCommandToDB("DELETE FROM users;");
 }
 
 const std::list<Album> DatabaseAccess::getAlbums()
