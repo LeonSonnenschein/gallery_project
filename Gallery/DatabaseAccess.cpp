@@ -295,10 +295,11 @@ bool DatabaseAccess::doesUserExists(int userId)
 int DatabaseAccess::countAlbumsOwnedOfUser(const User& user) // SELECT * FROM albums WHERE user_id = 2;
 {
 	int ans = 0;
-	string string_statement = "SELECT * FROM tags WHERE user_id = " + std::to_string(user.getId()) + ";";
+	string string_statement = "SELECT user_id FROM albums WHERE user_id = " + std::to_string(user.getId()) + ";"; // I could use COUNT function but that will require a good implementation of sqlite 
+																												  // in c++ or adding another callback function, and nither of those things are going to happen
 	const char* sqlStatement = string_statement.c_str();
 	char* errMessage = nullptr;
-	int res = sqlite3_exec(db, sqlStatement, printCallback, nullptr, &errMessage);
+	int res = sqlite3_exec(db, sqlStatement, countCallback, nullptr, &errMessage);
 
 	ans = global_count;
 	global_count = 0;
@@ -308,7 +309,16 @@ int DatabaseAccess::countAlbumsOwnedOfUser(const User& user) // SELECT * FROM al
 
 int DatabaseAccess::countAlbumsTaggedOfUser(const User& user)
 {
-	return 0;
+	int ans = 0;
+	string string_statement = "SELECT DISTINCT albums.id FROM tags JOIN pictures ON tags.picture_id = pictures.id JOIN albums ON albums.id = pictures.album_id WHERE albums.user_id = " + std::to_string(user.getId()) + ";";
+	const char* sqlStatement = string_statement.c_str();
+	char* errMessage = nullptr;
+	int res = sqlite3_exec(db, sqlStatement, countCallback, nullptr, &errMessage);
+
+	ans = global_count;
+	global_count = 0;
+
+	return ans;
 }
 
 int DatabaseAccess::countTagsOfUser(const User& user)
@@ -317,7 +327,7 @@ int DatabaseAccess::countTagsOfUser(const User& user)
 	string string_statement = "SELECT * FROM tags WHERE user_id = " + std::to_string(user.getId()) + ";";
 	const char* sqlStatement = string_statement.c_str();
 	char* errMessage = nullptr;
-	int res = sqlite3_exec(db, sqlStatement, printCallback, nullptr, &errMessage);
+	int res = sqlite3_exec(db, sqlStatement, countCallback, nullptr, &errMessage);
 
 	ans = global_count;
 	global_count = 0;
@@ -327,22 +337,48 @@ int DatabaseAccess::countTagsOfUser(const User& user)
 
 float DatabaseAccess::averageTagsPerAlbumOfUser(const User& user)
 {
-	return 0.0f;
+	return (float)this->countAlbumsOwnedOfUser(user) / (float)this->countAlbumsTaggedOfUser(user); // this one was really funny
 }
 
 User DatabaseAccess::getTopTaggedUser()
 {
-	return User(0, "name");
+	const char* sqlStatement = "SELECT * FROM users WHERE id = (SELECT user_id FROM(SELECT user_id, count(*) FROM tags GROUP BY user_id ORDER BY count(*) DESC) LIMIT 1);";
+	char* errMessage = nullptr;
+	int res = sqlite3_exec(db, sqlStatement, getUserCallback, nullptr, &errMessage);
+
+	User user(global_user->getId(), global_user->getName());
+	delete global_user;
+
+	return user;
 }
 
 Picture DatabaseAccess::getTopTaggedPicture()
 {
-	return Picture(0, "name");
+	string string_statement = "SELECT * FROM pictures WHERE id = (SELECT picture_id FROM(SELECT picture_id, count(*) FROM tags GROUP BY user_id ORDER BY count(*) DESC) LIMIT 1);";
+	const char* sqlStatement = string_statement.c_str();
+	char* errMessage = nullptr;
+
+	int res = sqlite3_exec(global_db, sqlStatement, pictureCallback, nullptr, &errMessage);
+
+	Picture picture(global_picture_list.front());
+	global_picture_list.clear();
+
+	return picture;
 }
 
 std::list<Picture> DatabaseAccess::getTaggedPicturesOfUser(const User& user)
 {
-	return std::list<Picture>();
+	string string_statement = "SELECT DISTINCT pictures.id, pictures.name, pictures.location, pictures.creation_date, pictures.album_id FROM tags JOIN pictures ON tags.picture_id = pictures.id WHERE tags.user_id = "
+		+ std::to_string(user.getId()) + ";";
+	const char* sqlStatement = string_statement.c_str();
+	char* errMessage = nullptr;
+
+	int res = sqlite3_exec(global_db, sqlStatement, pictureCallback, nullptr, &errMessage);
+
+	std::list<Picture> picture_list(global_picture_list);
+	global_picture_list.clear();
+
+	return picture_list;
 }
 
 int albumsCallback(void* data, int argc, char** argv, char** azColName)

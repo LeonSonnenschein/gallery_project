@@ -18,13 +18,13 @@ public:
 	void createAlbum(const Album& album) override; // 3 - done
 	bool doesAlbumExists(const std::string& albumName, int userId) override; // 3 - done
 	Album openAlbum(const std::string& albumName) override; // 3 - done
-	void closeAlbum(Album& pAlbum) override; // 1
+	void closeAlbum(Album& pAlbum) override; // 1 - done
 	void printAlbums() override; // 3 - done
 	void deleteAlbum(const std::string& albumName, int userId) override; // 2 - done
 
 	// Picture
 	void addPictureToAlbumByName(const std::string& albumName, const Picture& picture) override; // 3 - done
-	void removePictureFromAlbumByName(const std::string& albumName, const std::string& pictureName) override; // 3 - done // this won't work because of AlbumManager.cpp line 167
+	void removePictureFromAlbumByName(const std::string& albumName, const std::string& pictureName) override; // 3 - done
 	void tagUserInPicture(const std::string& albumName, const std::string& pictureName, int userId) override; // 2 - done
 	void untagUserInPicture(const std::string& albumName, const std::string& pictureName, int userId) override; // 2 - done
 
@@ -36,14 +36,14 @@ public:
 	bool doesUserExists(int userId) override; // 3 - done
 
 	// Statistics
-	int countAlbumsOwnedOfUser(const User& user) override; // 3
-	int countAlbumsTaggedOfUser(const User& user) override; // 3
-	int countTagsOfUser(const User& user) override; // 3
-	float averageTagsPerAlbumOfUser(const User& user) override; // 3
+	int countAlbumsOwnedOfUser(const User& user) override; // 3 - done
+	int countAlbumsTaggedOfUser(const User& user) override; // 3 - done
+	int countTagsOfUser(const User& user) override; // 3 - done
+	float averageTagsPerAlbumOfUser(const User& user) override; // 3 - done
 
 	//	Queries
-	User getTopTaggedUser() override; // 3
-	Picture getTopTaggedPicture() override; // 3
+	User getTopTaggedUser() override; // 3 - done
+	Picture getTopTaggedPicture() override; // 3 - done
 	std::list<Picture> getTaggedPicturesOfUser(const User& user) override; // 3
 
 	// Unrelated
@@ -54,8 +54,6 @@ public:
 	friend int pictureCallback(void* data, int argc, char** argv, char** azColName); // usefull
 
 	friend int tagsCallback(void* data, int argc, char** argv, char** azColName); // usefull
-
-	friend int albumsPrintCallback(void* data, int argc, char** argv, char** azColName);
 
 	friend int printCallback(void* data, int argc, char** argv, char** azColName); // usefull
 
