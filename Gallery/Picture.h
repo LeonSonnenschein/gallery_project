@@ -37,6 +37,8 @@ public:
 	bool operator==(const Picture& other) const;
 	friend std::ostream& operator<<(std::ostream& strout, const Picture& object);
 
+	void setTagedUsers(std::set<int> usersTags);
+
 private:
 	int m_pictureId;
 	std::string m_name;

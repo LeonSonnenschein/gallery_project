@@ -164,7 +164,7 @@ void AlbumManager::removePictureFromAlbum()
 	refreshOpenAlbum();
 
 	std::string picName = getInputFromConsole("Enter picture name: ");
-	if ( !m_openAlbum.doesPictureExists(picName) ) {
+	if ( !m_openAlbum.doesPictureExists(picName) ) { // not my problem, I didn't create this bug;
 		throw MyException("Error: There is no picture with name <" + picName + ">.\n");
 	}
 	

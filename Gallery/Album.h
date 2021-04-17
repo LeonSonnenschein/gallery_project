@@ -40,6 +40,8 @@ public:
 	void setID(int id);
 	int getID();
 
+	void setPictureList(std::list<Picture> picture_list);
+
 private:
     int m_ownerId { 0 };
 	int _id;
