@@ -11,7 +11,7 @@ std::set<int> global_users_tags; // cool, more global, I would say that I'm dead
 
 bool DatabaseAccess::open()
 {
-	string dbFileName = "db.sqlite";
+	string dbFileName = "newGalleryDB.sqlite";
 	int doesFileExist = _access(dbFileName.c_str(), 0);
 	int res = sqlite3_open(dbFileName.c_str(), &this->db);
 
@@ -341,7 +341,7 @@ int DatabaseAccess::countTagsOfUser(const User& user)
 
 float DatabaseAccess::averageTagsPerAlbumOfUser(const User& user)
 {
-	return (float)this->countAlbumsOwnedOfUser(user) / (float)this->countAlbumsTaggedOfUser(user); // this one was really funny
+	return  (float)this->countAlbumsTaggedOfUser(user) / (float)this->countAlbumsOwnedOfUser(user);
 }
 
 User DatabaseAccess::getTopTaggedUser()
